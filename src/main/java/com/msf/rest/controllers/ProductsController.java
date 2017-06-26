@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -13,10 +14,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.msf.rest.dao.ProductsDAO;
 import com.msf.rest.models.Product;
 
 @Path("products")
 public class ProductsController {
+	
+	private ProductsDAO dao;
 
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -30,8 +34,12 @@ public class ProductsController {
 	
 	@POST
 	@Path("create")
-	public Response createNewProduct(String msg){
-		String output = "POST:Jersey say : " + msg;
+	public Response createNewProduct(@FormParam("name") String name, @FormParam("description") String description){
+		Product p = new Product();
+		p.setDescription(description);
+		p.setName(name);
+		getDao().persist(p);
+		String output = "Product create successfully";
 		return Response.status(200).entity(output).build();
 	}
 	
@@ -77,4 +85,14 @@ public class ProductsController {
 		return p;
 	}
 
+	public ProductsDAO getDao() {
+		if(dao == null){
+			dao = new ProductsDAO();
+		}
+		return dao;
+	}
+
+	public void setDao(ProductsDAO dao) {
+		this.dao = dao;
+	}
 }
