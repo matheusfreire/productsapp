@@ -19,10 +19,10 @@ public class Image implements Serializable{
 	
 	private static final long serialVersionUID = -7991881621478322926L;
 	@Id 
-    @Column(name = "id", nullable = false)
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
 	@Getter @Setter
-    private long custId;
+    private int id;
 	
 	@Getter @Setter
 	private String type;

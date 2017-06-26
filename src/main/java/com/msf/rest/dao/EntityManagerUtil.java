@@ -5,7 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class Database {
+public class EntityManagerUtil {
 	
 	private static EntityTransaction transaction;
 	private static EntityManager entityManager;
@@ -13,18 +13,9 @@ public class Database {
 	static {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("appdb");
 		entityManager = factory.createEntityManager();
-		transaction = entityManager.getTransaction();
 	}
 	
-	public static void beginTransaction(){
-		transaction.begin();
-	}
-
-	public static EntityTransaction getTransaction() {
-		return transaction;
-	}
-	
-	public void commit(){
+	public static void commit(){
 		transaction.commit();
 	}
 
