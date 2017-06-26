@@ -12,8 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Data;
+
 @Entity
 @Table(name="products")
+@Data
 public class Product implements Serializable{
 	
 	/**
@@ -33,39 +36,4 @@ public class Product implements Serializable{
 	@OneToMany(mappedBy="product", targetEntity=Image.class,cascade=CascadeType.ALL)
 	private List<Image> images;
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public List<Image> getImages() {
-		return images;
-	}
-
-	public void setImages(List<Image> images) {
-		this.images = images;
-	}
-	
-	
-
 }
-
