@@ -1,23 +1,37 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
-	version="2.0">
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
+    version="2.0">
+    <persistence-unit name="appdb" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.ejb.HibernatePersistence</provider>
 
-	<persistence-unit name="pu-sqlite-jpa">
-		
-		<provider>org.hibernate.ejb.HibernatePersistence</provider>
-		
-		<properties>
-		
-            <property name="hibernate.dialect" value="com.blogspot.thedevside.util.SQLiteDialect"/>
-			<property name="hibernate.hbm2ddl.auto" value="create"/>
-			<property name="hibernate.show_sql" value="true"/>
-			<property name="hibernate.format_sql" value="false"/>
-			
-			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC"/>
-			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:thedevside.db"/>
-			
+        <class>com.msf.rest.models.Product</class>
+        <class>com.msf.rest.models.Image</class>
+
+        <properties>
+            <property name="hibernate.bytecode.use_reflection_optimizer" value="true"/>
+            <property name="hibernate.default_batch_fetch_size" value="100"/>
+            <property name="hibernate.cache.use_second_level_cache" value="true"/>
+<!--        <property name="hibernate.cache.use_query_cache" value="true"/>     -->
+            <property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.EhCacheProvider"/>
+
+            <property name="hibernate.archive.autodetection" value="class, hbm"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+            <property name="hibernate.dialect" value="hr.loggingserver.model.dao.dialect.SQLiteDialect"/>
+            <!--  Set isolation level to repeatable_read (read_commited je 2) -->
+            <property name="hibernate.connection.isolation" value="4"/>
+            <property name="hibernate.connection.release_mode" value="after_transaction"/>
+
+            <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC"/>
+            <property name="hibernate.connection.url" value="jdbc:sqlite:app.db"/>
+            <property name="hibernate.c3p0.min_size" value="5"/>
+            <property name="hibernate.c3p0.max_size" value="50"/>
+            <property name="hibernate.c3p0.timeout" value="300"/>
+            <property name="hibernate.c3p0.max_statements" value="50"/>
+            <property name="hibernate.c3p0.idle_test_period" value="600"/>
+
         </properties>
-        
     </persistence-unit>
 </persistence>
