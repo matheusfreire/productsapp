@@ -11,7 +11,7 @@ public class ProductsDAO implements IMethods<Product>{
 
 	@Override
 	public void persist(Product p) {
-		Database.getEntityManager().persist(p);
+		EntityManagerUtil.getEntityManager().persist(p);
 	}
 
 	@Override
@@ -20,7 +20,7 @@ public class ProductsDAO implements IMethods<Product>{
 
 	@Override
 	public void delete(Product p) {
-		Database.getEntityManager().remove(p);
+		EntityManagerUtil.getEntityManager().remove(p);
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class ProductsDAO implements IMethods<Product>{
 
 	@Override
 	public List<Product> recoverAll(String query) {
-		Query q = Database.getEntityManager().createQuery("SELECT * FROM products", Product.class);
+		Query q = EntityManagerUtil.getEntityManager().createQuery("SELECT * FROM products", Product.class);
 		List<Product> products = q.getResultList();
 		return products;
 	}

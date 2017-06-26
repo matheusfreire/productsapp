@@ -1,6 +1,6 @@
 package com.msf.rest;
 
-import static org.junit.Assert.*;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -8,7 +8,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.msf.rest.dao.EntityManagerUtil;
 import com.msf.rest.models.Product;
+
+import junit.framework.Assert;
 
 public class ProductsTest {
 
@@ -19,11 +22,6 @@ public class ProductsTest {
 		entityManager.getTransaction().begin();
 	}
 
-	@After
-	public void tearDown() throws Exception {
-		entityManager.close();
-	}
-
 	@Test
 	public void createProduct() {
 		Product product = new Product();
@@ -31,11 +29,40 @@ public class ProductsTest {
 		product.setDescription("description awesome");
 		product = entityManager.merge(product);
 		entityManager.getTransaction().commit();
+		Assert.assertEquals(1, recoverProducts().size());
 	}
 
 	@Test
-	public void test() {
-		fail("Not yet implemented");
+	public void updateProduct() {
+		try {
+			Product product = findProduct(1);
+			product.setName("update");
+			entityManager.getTransaction().commit();
+			Assert.assertEquals("update", findProduct(1).getName());
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+		}
+	}
+	
+
+	@Test
+	public void deleteProduct() {
+		try {
+			Product product = findProduct(1);
+			entityManager.remove(product);
+			entityManager.getTransaction().commit();
+			Assert.assertEquals(0, recoverProducts().size());
+		} catch (Exception e) {
+			entityManager.getTransaction().rollback();
+		}
+	}
+	
+	private Product findProduct(long id){
+		return (Product) entityManager.find(Product.class, id);
+	}
+
+	private List<Product> recoverProducts() {
+		return entityManager.createQuery("from Product").getResultList();
 	}
 
 }
