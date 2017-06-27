@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="images")
+@Table(name="Images")
 public class Image implements Serializable{
 	
 	private static final long serialVersionUID = -7991881621478322926L;

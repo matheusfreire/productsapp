@@ -24,23 +24,6 @@ public class ImagesTest {
 		entityManager.getTransaction().begin();
 	}
 
-	@Test
-	public void createImage() {
-		createProduct();
-		Image image = new Image();
-		image.setType("jpeg");
-		image.setProduct(product);
-		image = entityManager.merge(image);
-		entityManager.getTransaction().commit();
-		Assert.assertEquals(1, recoverImages().size());
-	}
-
-	private void createProduct() {
-		product = new Product();
-		product.setName("Teste create");
-		product.setDescription("description awesome");
-		product = entityManager.merge(product);
-	}
 
 	@Test
 	public void updateImage() {
