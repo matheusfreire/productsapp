@@ -44,7 +44,7 @@ public class ImagesController {
 
 	@PUT
 	@Path("{id}")
-	public Response updateImage(@PathParam("id") int id, @QueryParam("name") String type) {
+	public Response updateImage(@PathParam("id") int id, @QueryParam("type") String type) {
 		try {
 			Image i = getDao().find(id);
 			i.setType(type);

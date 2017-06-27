@@ -8,7 +8,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.msf.rest.dao.EntityManagerUtil;
+import com.msf.rest.bd.EntityManagerUtil;
 import com.msf.rest.models.Image;
 import com.msf.rest.models.Product;
 

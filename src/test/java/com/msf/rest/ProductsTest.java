@@ -1,54 +1,54 @@
 package com.msf.rest;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.msf.rest.dao.EntityManagerUtil;
-import com.msf.rest.models.Image;
+import com.msf.rest.bd.EntityManagerUtil;
+import com.msf.rest.dao.ProductsDAO;
 import com.msf.rest.models.Product;
 
 import junit.framework.Assert;
 
 public class ProductsTest {
 
-	private EntityManager entityManager = EntityManagerUtil.getEntityManager();
-
-	@Before
-	public void setUp() throws Exception {
-		entityManager.getTransaction().begin();
+	private ProductsDAO dao;
+	
+	@Before()
+	public void setUp(){
+		EntityManagerUtil.initiateManager();
 	}
+
 
 	@Test
 	public void createProduct() {
 		Product product = new Product();
 		product.setName("Teste create");
 		product.setDescription("description awesome");
-		product = entityManager.merge(product);
-		
+		List<Product> arrayList = new ArrayList<Product>();
 		for(int i = 0; i<5; i++){
-			Image image = new Image();
-			image.setType("jpg");
-			image.setProduct(product);
-			entityManager.persist(image);
+			Product p = new Product();
+			p.setName("Teste create"+i);
+			p.setDescription("description awesome"+i);
+			p.setProduct(product);
+			arrayList.add(p);
 		}
-		entityManager.getTransaction().commit();
-		Assert.assertEquals(1, recoverProducts().size());
-		Assert.assertEquals(5, recoverImages().size());
+		product.setChildProducts(arrayList);
+		getDao().persist(product);
+		Assert.assertEquals(6, recoverProducts().size());
+		Assert.assertEquals(5, recoverChild(getDao().find(1)).size());
 	}
 
 	@Test
 	public void updateProduct() {
 		try {
-			Product product = findProduct(1);
+			Product product = getDao().find(1);
 			product.setName("update");
-			entityManager.getTransaction().commit();
-			Assert.assertEquals("update", findProduct(1).getName());
+			Assert.assertEquals("update", getDao().find(1).getName());
 		} catch (Exception e) {
-			entityManager.getTransaction().rollback();
+			
 		}
 	}
 	
@@ -56,25 +56,34 @@ public class ProductsTest {
 	@Test
 	public void deleteProduct() {
 		try {
-			Product product = findProduct(1);
-			entityManager.remove(product);
-			entityManager.getTransaction().commit();
+			Product product = getDao().find(1);
+			getDao().delete(product);
 			Assert.assertEquals(0, recoverProducts().size());
 		} catch (Exception e) {
-			entityManager.getTransaction().rollback();
 		}
 	}
 	
-	private Product findProduct(long id){
-		return (Product) entityManager.find(Product.class, id);
-	}
-
 	private List<Product> recoverProducts() {
-		return entityManager.createQuery("from Product").getResultList();
+		return getDao().recoverAll("from Product");
 	}
 	
-	private List<Image> recoverImages() {
-		return entityManager.createQuery("from Image").getResultList();
+	private List<Product> recoverChild(Product p){
+		return getDao().recoverAllChildProducts(p);
 	}
+	
+	public ProductsDAO getDao() {
+		if(dao == null){
+			dao = new ProductsDAO();
+		}
+		return dao;
+	}
+
+	public void setDao(ProductsDAO dao) {
+		this.dao = dao;
+	}
+	
+	
+	
+	
 
 }

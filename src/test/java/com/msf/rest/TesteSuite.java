@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
-import com.msf.rest.dao.EntityManagerUtil;
+import com.msf.rest.bd.EntityManagerUtil;
 
 @RunWith(Suite.class)
 @SuiteClasses({ ProductsTest.class,ImagesTest.class })

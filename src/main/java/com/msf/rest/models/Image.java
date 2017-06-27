@@ -7,28 +7,27 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
 @Table(name="Images")
+@Data
 public class Image implements Serializable{
 	
 	private static final long serialVersionUID = -7991881621478322926L;
 	@Id 
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-	@Getter @Setter
     private int id;
 	
-	@Getter @Setter
 	private String type;
 	
-	@Getter @Setter
 	@ManyToOne
+	@JoinColumn(name="product_id")
 	private Product product;
 
 }

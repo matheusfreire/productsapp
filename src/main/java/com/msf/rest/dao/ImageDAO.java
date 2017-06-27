@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.RollbackException;
 
+import com.msf.rest.bd.EntityManagerUtil;
 import com.msf.rest.contracts.IDatabase;
 import com.msf.rest.models.Image;
 import com.msf.rest.models.Product;
@@ -11,18 +12,19 @@ import com.msf.rest.models.Product;
 public class ImageDAO implements IDatabase<Image>{
 	
 	@Override
-	public void persist(Image p) throws RollbackException{
+	public void persist(Image i) throws RollbackException{
 		try{
 			EntityManagerUtil.beginTransaction();
-			p = EntityManagerUtil.getEntityManager().merge(p);
-			EntityManagerUtil.getEntityManager().persist(p);			
+			i = EntityManagerUtil.getEntityManager().merge(i);
+			EntityManagerUtil.getEntityManager().persist(i);
+			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
 		}
 	}
 
 	@Override
-	public void update(Image p, int id) throws RollbackException{
+	public void update(Image p, Integer id) throws RollbackException{
 		try{
 			Image image = find(id);
 			EntityManagerUtil.beginTransaction();
@@ -49,7 +51,7 @@ public class ImageDAO implements IDatabase<Image>{
 	}
 
 	@Override
-	public Image find(int id) {
+	public Image find(Integer id) {
 		return (Image) EntityManagerUtil.getEntityManager().find(Image.class, id);
 	}
 	

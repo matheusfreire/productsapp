@@ -3,7 +3,6 @@ package com.msf.rest.controllers;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -33,7 +32,7 @@ public class ProductsController {
 	@POST
 	@Path("new")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createNewProduct(@FormParam("name") String name, @FormParam("description") String description){
+	public Response createNewProduct(@QueryParam("name") String name, @QueryParam("description") String description){
 		try{
 			Product p = new Product();
 			p.setDescription(description);
@@ -41,6 +40,24 @@ public class ProductsController {
 			getDao().persist(p);
 			return Response.status(Status.OK).entity("Product created successfully").build();			
 		} catch (Exception e){
+			e.printStackTrace();
+			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
+		}
+	}
+	
+	@POST
+	@Path("{id}/newChild")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createNewChildProduct(@PathParam("id")int id,@QueryParam("name") String name, @QueryParam("description") String description){
+		try{
+			Product p = new Product();
+			p.setDescription(description);
+			p.setName(name);
+			p.setProduct(getDao().find(id));
+			getDao().persist(p);
+			return Response.status(Status.OK).entity("Product created successfully").build();			
+		} catch (Exception e){
+			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
 	}
@@ -54,6 +71,7 @@ public class ProductsController {
 			p.setName(name);
 			return Response.status(Status.OK).entity("Product updated successfully").build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
 	}
@@ -68,6 +86,7 @@ public class ProductsController {
 			getDao().delete(p);
 			return Response.status(Status.OK).entity("Product deleted successfully").build();
 		} catch (Exception e) {
+			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
 	}
@@ -80,17 +99,22 @@ public class ProductsController {
 		try{
 			return getDao().find(id);
 		} catch (Exception e) {
+			e.printStackTrace();
 			return null;	
 		}
 	}
 	
 	@GET
-	@Path("{id}/child")
+	@Path("{id}/products")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Product recoverChildrenProducts(@PathParam("id") int id){
-		Product p = new Product();
-		p.setName("Teste");
-		return p;
+	public List<Product> recoverChildrenProducts(@PathParam("id") int id){
+		try{
+			Product p = getDao().find(id);
+			return getDao().recoverAllChildProducts(p);
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	@GET

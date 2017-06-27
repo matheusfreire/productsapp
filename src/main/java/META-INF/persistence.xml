@@ -8,31 +8,16 @@
 		<class>com.msf.rest.models.Product</class>
 		<class>com.msf.rest.models.Image</class>
 
-		<!-- <properties> -->
-		<!-- <property name="hibernate.bytecode.use_reflection_optimizer" value="true"/> -->
-		<!-- <property name="hibernate.default_batch_fetch_size" value="100"/> -->
-		<!-- <property name="hibernate.cache.use_second_level_cache" value="true"/> -->
-		<!-- <property name="hibernate.cache.use_query_cache" value="true"/> -->
-		<!-- <property name="hibernate.cache.provider_class" value="net.sf.ehcache.hibernate.EhCacheProvider"/> -->
-
-		<!-- <property name="hibernate.archive.autodetection" value="class, hbm"/> -->
-		<!-- <property name="hibernate.show_sql" value="true"/> -->
-		<!-- <property name="hibernate.format_sql" value="true"/> -->
-		<!-- <property name="hibernate.hbm2ddl.auto" value="update"/> -->
-		<!-- <property name="hibernate.dialect" value="hr.loggingserver.model.dao.dialect.SQLiteDialect"/> -->
-		<!-- Set isolation level to repeatable_read (read_commited je 2) -->
-		<!-- <property name="hibernate.connection.isolation" value="4"/> -->
-		<!-- <property name="hibernate.connection.release_mode" value="after_transaction"/> -->
-
-		<!-- <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC"/> -->
-		<!-- <property name="hibernate.connection.url" value="jdbc:sqlite:app.db"/> -->
-		<!-- <property name="hibernate.c3p0.min_size" value="5"/> -->
-		<!-- <property name="hibernate.c3p0.max_size" value="50"/> -->
-		<!-- <property name="hibernate.c3p0.timeout" value="300"/> -->
-		<!-- <property name="hibernate.c3p0.max_statements" value="50"/> -->
-		<!-- <property name="hibernate.c3p0.idle_test_period" value="600"/> -->
-
-		<!-- </properties> -->
+		<properties>
+	      <property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
+	      <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:appdb.sqlite" />
+	      <property name="javax.persistence.jdbc.user" value="" />
+	      <property name="javax.persistence.jdbc.password" value="" />
+	
+	      <property name="hibernate.dialect" value="com.msf.rest.bd.SQLiteDialect"/>
+	      <property name="hibernate.connection.charSet" value="UTF-8"/>
+	      <property name="hibernate.hbm2ddl.auto" value="create"/>
+	    </properties>
 
 		<!-- <properties> -->
 		<!-- <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" 
@@ -49,15 +34,15 @@
 		<!-- value="false" /> -->
 		<!-- </properties> -->
 
-		<properties>
-			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/Documentos" />
-			<property name="javax.persistence.jdbc.user" value="sa" />
-			<property name="javax.persistence.jdbc.password" value="" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-			<property name="hibernate.hbm2ddl.auto" value="create-drop" />
-			<property name="show_sql" value="true" />
-			<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" />
-		</properties>
+<!-- 		<properties> -->
+<!-- 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" /> -->
+<!-- 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:~/Documentos" /> -->
+<!-- 			<property name="javax.persistence.jdbc.user" value="sa" /> -->
+<!-- 			<property name="javax.persistence.jdbc.password" value="" /> -->
+<!-- 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" /> -->
+<!-- 			<property name="hibernate.hbm2ddl.auto" value="create-drop" /> -->
+<!-- 			<property name="show_sql" value="true" /> -->
+<!-- 			<property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" /> -->
+<!-- 		</properties> -->
 	</persistence-unit>
 </persistence>
