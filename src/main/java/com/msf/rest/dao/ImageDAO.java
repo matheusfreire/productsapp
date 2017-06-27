@@ -8,12 +8,10 @@ import com.msf.rest.contracts.IDatabase;
 import com.msf.rest.models.Image;
 import com.msf.rest.models.Product;
 
-public class ProductsDAO implements IDatabase<Product>{
-	
-	private ImageDAO imageDAO;
+public class ImageDAO implements IDatabase<Image>{
 	
 	@Override
-	public void persist(Product p) throws RollbackException{
+	public void persist(Image p) throws RollbackException{
 		try{
 			EntityManagerUtil.beginTransaction();
 			p = EntityManagerUtil.getEntityManager().merge(p);
@@ -24,12 +22,11 @@ public class ProductsDAO implements IDatabase<Product>{
 	}
 
 	@Override
-	public void update(Product p, int id) throws RollbackException{
+	public void update(Image p, int id) throws RollbackException{
 		try{
-			Product product = find(id);
+			Image image = find(id);
 			EntityManagerUtil.beginTransaction();
-			product.setDescription(p.getDescription());
-			product.setName(p.getName());
+			image.setType(p.getType());
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
@@ -37,9 +34,9 @@ public class ProductsDAO implements IDatabase<Product>{
 	}
 
 	@Override
-	public void delete(Product p) throws RollbackException{
+	public void delete(Image i) throws RollbackException{
 		try{
-			EntityManagerUtil.getEntityManager().remove(p);
+			EntityManagerUtil.getEntityManager().remove(i);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
@@ -47,17 +44,17 @@ public class ProductsDAO implements IDatabase<Product>{
 	}
 
 	@Override
-	public List<Product> recoverAll(String query) {
+	public List<Image> recoverAll(String query) {
 		return EntityManagerUtil.getEntityManager().createQuery(query).getResultList();
 	}
 
 	@Override
-	public Product find(int id) {
-		return (Product) EntityManagerUtil.getEntityManager().find(Product.class, id);
+	public Image find(int id) {
+		return (Image) EntityManagerUtil.getEntityManager().find(Image.class, id);
 	}
 	
-	public List<Image> getImageByProduct(Product p){
-		return new ImageDAO().recoverAllByProduct(p);
+	public List<Image> recoverAllByProduct(Product p){
+		return EntityManagerUtil.getEntityManager().createQuery("from Image where product = :product").setParameter("product",p).getResultList();
 	}
 
 }

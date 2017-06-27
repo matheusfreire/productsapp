@@ -7,12 +7,13 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.msf.rest.dao.EntityManagerUtil;
+
 /**
  * Main class.
  *
  */
-public class Main {
-    // Base URI the Grizzly HTTP server will listen on
+public class App {
     public static final String BASE_URI = "http://localhost:8080/";
 
     /**
@@ -31,9 +32,10 @@ public class Main {
      */
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
+        EntityManagerUtil entityManagerUtil;
         System.out.println("Running");
         System.in.read();
-        server.stop();
+        server.shutdownNow();;
     }
     
     
