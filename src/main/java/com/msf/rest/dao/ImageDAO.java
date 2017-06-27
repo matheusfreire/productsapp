@@ -59,4 +59,9 @@ public class ImageDAO implements IDatabase<Image>{
 		return EntityManagerUtil.getEntityManager().createQuery("from Image where product = :product").setParameter("product",p).getResultList();
 	}
 
+	@Override
+	public Image findComplete(Integer id) {
+		return find(id);
+	}
+
 }

@@ -7,6 +7,8 @@ import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 
+import com.msf.rest.bd.EntityManagerUtil;
+
 /**
  * Main class.
  *
@@ -30,6 +32,7 @@ public class App {
      */
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
+        EntityManagerUtil.initiateManager();
         System.out.println("Running");
         System.in.read();
         server.shutdownNow();;

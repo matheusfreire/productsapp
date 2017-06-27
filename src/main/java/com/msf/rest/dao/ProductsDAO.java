@@ -28,8 +28,7 @@ public class ProductsDAO implements IDatabase<Product>{
 		try{
 			Product product = find(id);
 			EntityManagerUtil.beginTransaction();
-			product.setDescription(p.getDescription());
-			product.setName(p.getName());
+			product = EntityManagerUtil.getEntityManager().merge(p);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
@@ -64,6 +63,14 @@ public class ProductsDAO implements IDatabase<Product>{
 	@SuppressWarnings("unchecked")
 	public List<Product> recoverAllChildProducts(Product p) {
 		return EntityManagerUtil.getEntityManager().createQuery("from Product where parent_product_id = :product").setParameter("product",p.getId()).getResultList();
+	}
+
+	@Override
+	public Product findComplete(Integer id) {
+		Product p =find(id);
+		p.setChildProducts(recoverAllChildProducts(p));
+		p.setImages(getImageByProduct(p));
+		return p;
 	}
 
 }

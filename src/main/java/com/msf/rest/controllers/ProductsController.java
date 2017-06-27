@@ -69,6 +69,7 @@ public class ProductsController {
 			Product p = getDao().find(id);
 			p.setDescription(description);
 			p.setName(name);
+			getDao().update(p, id);
 			return Response.status(Status.OK).entity("Product updated successfully").build();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -82,13 +83,20 @@ public class ProductsController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteProduct(@PathParam("id") int id){
 		try{
-			Product p = getDao().find(id);
-			getDao().delete(p);
+			getDao().delete(getDao().findComplete(id));
 			return Response.status(Status.OK).entity("Product deleted successfully").build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
+	}
+	
+	private List<Product> recoverProducts() {
+		return getDao().recoverAll("from Product");
+	}
+	
+	private List<Product> recoverChild(Product p){
+		return getDao().recoverAllChildProducts(p);
 	}
 	
 	

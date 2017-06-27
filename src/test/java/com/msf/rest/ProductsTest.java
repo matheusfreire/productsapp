@@ -56,7 +56,7 @@ public class ProductsTest {
 	@Test
 	public void deleteProduct() {
 		try {
-			Product product = getDao().find(1);
+			Product product = getDao().findComplete(1);
 			getDao().delete(product);
 			Assert.assertEquals(0, recoverProducts().size());
 		} catch (Exception e) {
