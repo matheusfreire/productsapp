@@ -26,7 +26,28 @@ public class ProductsController {
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
     public List<Product> allProducts() {
-		return getDao().recoverAll("from Product");
+		try{
+			return getDao().recoverAll("from Product where parent_product_id is null");
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
+    }
+	
+	@GET
+	@Path("detailed")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Product> allProductsDetailed() {
+		try{
+			List<Product> products = getDao().recoverAll("from Product where parent_product_id is null");
+			for (Product product : products) {
+				getDao().findComplete(new Integer(product.getId()));
+			}
+			return products;
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
     }
 	
 	@POST
@@ -91,15 +112,6 @@ public class ProductsController {
 		}
 	}
 	
-	private List<Product> recoverProducts() {
-		return getDao().recoverAll("from Product");
-	}
-	
-	private List<Product> recoverChild(Product p){
-		return getDao().recoverAllChildProducts(p);
-	}
-	
-	
 	@GET
 	@Path("{id}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -113,14 +125,14 @@ public class ProductsController {
 	}
 	
 	@GET
-	@Path("{id}/complete")
+	@Path("{id}/detailed")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response recoverProductComplete(@PathParam("id") int id){
 		try{
 			return Response.status(Status.OK).entity(getDao().findComplete(id)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;	
+			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
 	}
 	

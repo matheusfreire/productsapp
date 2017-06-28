@@ -29,5 +29,9 @@ public class Image implements Serializable{
 	@ManyToOne
 	@JoinColumn(name="product_id")
 	private Product product;
+	
+	public Image(){
+		
+	}
 
 }

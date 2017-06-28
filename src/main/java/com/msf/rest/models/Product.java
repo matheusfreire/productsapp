@@ -25,6 +25,10 @@ import lombok.Data;
 public class Product implements Serializable{
 	
 	private static final long serialVersionUID = -4747635346806802214L;
+	
+	public Product(){
+		
+	}
 
 	@Id 
     @GeneratedValue(strategy = GenerationType.AUTO)

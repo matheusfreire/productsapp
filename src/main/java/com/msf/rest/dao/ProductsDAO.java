@@ -60,7 +60,7 @@ public class ProductsDAO implements IDatabase<Product>{
 	}
 	
 	public List<Image> getImageByProduct(Product p){
-		return new ImageDAO().recoverAllByProduct(p);
+		return getImageDAO().recoverAllByProduct(p);
 	}
 
 	@SuppressWarnings("unchecked")

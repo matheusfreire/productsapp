@@ -17,22 +17,9 @@
 	      <property name="hibernate.dialect" value="com.msf.rest.bd.SQLiteDialect"/>
 	      <property name="hibernate.connection.charSet" value="UTF-8"/>
 	      <property name="hibernate.hbm2ddl.auto" value="create"/>
+	      <property name="show_sql" value="true" />
+	      <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false" />
 	    </properties>
-
-		<!-- <properties> -->
-		<!-- <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" 
-			/> -->
-		<!-- <property name="javax.persistence.jdbc.url" value="jdbc:derby:/home/trixti/Documentos/appDb;create=true" 
-			/> -->
-		<!-- <property name="javax.persistence.jdbc.user" value="username" /> -->
-		<!-- <property name="javax.persistence.jdbc.password" value="password" 
-			/> -->
-		<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.DerbyDialect" 
-			/> -->
-		<!-- <property name="show_sql" value="true" /> -->
-		<!-- <property name="hibernate.temp.use_jdbc_metadata_defaults" -->
-		<!-- value="false" /> -->
-		<!-- </properties> -->
 
 <!-- 		<properties> -->
 <!-- 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" /> -->
