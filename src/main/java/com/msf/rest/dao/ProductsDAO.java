@@ -2,6 +2,7 @@ package com.msf.rest.dao;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.persistence.RollbackException;
 
 import com.msf.rest.bd.EntityManagerUtil;
@@ -11,12 +12,14 @@ import com.msf.rest.models.Product;
 
 public class ProductsDAO implements IDatabase<Product>{
 	
+	private ImageDAO imageDAO;
+	
 	@Override
 	public void persist(Product p) throws RollbackException{
 		try{
 			EntityManagerUtil.beginTransaction();
-			p = EntityManagerUtil.getEntityManager().merge(p);
-			EntityManagerUtil.getEntityManager().persist(p);
+			p = getEntityManager().merge(p);
+			getEntityManager().persist(p);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
@@ -28,7 +31,7 @@ public class ProductsDAO implements IDatabase<Product>{
 		try{
 			Product product = find(id);
 			EntityManagerUtil.beginTransaction();
-			product = EntityManagerUtil.getEntityManager().merge(p);
+			product = getEntityManager().merge(p);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
@@ -39,7 +42,7 @@ public class ProductsDAO implements IDatabase<Product>{
 	public void delete(Product p) throws RollbackException{
 		try{
 			EntityManagerUtil.beginTransaction();
-			EntityManagerUtil.getEntityManager().remove(p);
+			getEntityManager().remove(p);
 			EntityManagerUtil.commit();
 		} catch (Exception r){
 			throw r;
@@ -48,12 +51,12 @@ public class ProductsDAO implements IDatabase<Product>{
 
 	@Override
 	public List<Product> recoverAll(String query) {
-		return EntityManagerUtil.getEntityManager().createQuery(query).getResultList();
+		return getEntityManager().createQuery(query).getResultList();
 	}
 
 	@Override
 	public Product find(Integer id) {
-		return (Product) EntityManagerUtil.getEntityManager().find(Product.class, id);
+		return (Product) getEntityManager().find(Product.class, id);
 	}
 	
 	public List<Image> getImageByProduct(Product p){
@@ -62,12 +65,28 @@ public class ProductsDAO implements IDatabase<Product>{
 
 	@SuppressWarnings("unchecked")
 	public List<Product> recoverAllChildProducts(Product p) {
-		return EntityManagerUtil.getEntityManager().createQuery("from Product where parent_product_id = :product").setParameter("product",p.getId()).getResultList();
+		return getEntityManager().createQuery("from Product where parent_product_id = :product").setParameter("product",p.getId()).getResultList();
+	}
+
+	private EntityManager getEntityManager() {
+		return EntityManagerUtil.getEntityManager();
+	}
+	
+	public void persistImage(Image image){
+		getImageDAO().persist(image);
+	}
+
+	public ImageDAO getImageDAO() {
+		if (imageDAO == null) {
+			imageDAO = new ImageDAO();
+		}
+		return imageDAO;
 	}
 
 	@Override
 	public Product findComplete(Integer id) {
 		Product p =find(id);
+		getEntityManager().detach(p);
 		p.setChildProducts(recoverAllChildProducts(p));
 		p.setImages(getImageByProduct(p));
 		return p;

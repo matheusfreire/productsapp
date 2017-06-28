@@ -28,7 +28,7 @@ public class ImagesController {
 	}
 
 	@POST
-	@Path("new")
+	@Path("/new")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response createNewImage(@QueryParam("type") String type) {
 		try {

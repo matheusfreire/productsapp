@@ -115,12 +115,27 @@ public class ProductsController {
 	@GET
 	@Path("{id}/complete")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Product recoverProductComplete(@PathParam("id") int id){
+	public Response recoverProductComplete(@PathParam("id") int id){
 		try{
-			return getDao().findComplete(id);
+			return Response.status(Status.OK).entity(getDao().findComplete(id)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;	
+		}
+	}
+	
+	@POST
+	@Path("{id}/newImage")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response createNewImage(@PathParam("id") int id,@QueryParam("type") String type) {
+		try {
+			Image image = new Image();
+			image.setType(type);
+			image.setProduct(getDao().find(id));
+			getDao().persistImage(image);
+			return Response.status(Status.OK).entity("Image created successfully").build();
+		} catch (Exception e) {
+			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
 	}
 	
