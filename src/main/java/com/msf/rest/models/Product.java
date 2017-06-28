@@ -63,6 +63,12 @@ public class Product implements Serializable{
 	@Getter @Setter
 	private List<Product> childProducts;
 	
+	public String toJsonBasic(){
+		StringBuilder s = new StringBuilder(OPEN_KEYS);
+		composeJsonInfoBasic(s);
+		return s.append(CLOSE_KEYS).toString();
+	}
+	
 	
 	public String toJson(){
 		StringBuilder s = new StringBuilder(OPEN_KEYS);
@@ -83,7 +89,7 @@ public class Product implements Serializable{
 
 
 	private void composeChildProductsArray(StringBuilder s) {
-		s.append(DOUBLE_QUOTE + "products" + DOUBLE_QUOTE + ":");
+		s.append(DOUBLE_QUOTE + "childProducts" + DOUBLE_QUOTE + ":");
 		s.append(OPEN_BRACKETS);
 		for (int i = 0; i<childProducts.size();i++) {
 			s.append(OPEN_KEYS);

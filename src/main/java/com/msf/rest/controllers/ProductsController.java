@@ -1,5 +1,7 @@
 package com.msf.rest.controllers;
 
+import static com.msf.rest.util.TagUtil.*;
+
 import java.util.List;
 
 import javax.ws.rs.DELETE;
@@ -25,28 +27,40 @@ public class ProductsController {
 
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> allProducts() {
+    public Response allProducts() {
 		try{
-			return getDao().recoverAll("from Product where parent_product_id is null");
+			StringBuilder s = new StringBuilder(OPEN_BRACKETS);
+			List<Product> products = getDao().recoverAll("from Product where parent_product_id is null");
+			for(int i = 0; i<products.size();i++){
+				s.append(getDao().findComplete(new Integer(products.get(i).getId())).toJsonBasic());
+				if(i != products.size() -1){
+					s.append(COMMA);
+				}
+			}
+			return Response.status(Status.OK).entity(s.append(CLOSE_BRACKETS).toString()).build();			
 		} catch (Exception e){
 			e.printStackTrace();
-			return null;
+			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
     }
 	
 	@GET
 	@Path("detailed")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Product> allProductsDetailed() {
+    public Response allProductsDetailed() {
 		try{
+			StringBuilder s = new StringBuilder(OPEN_BRACKETS);
 			List<Product> products = getDao().recoverAll("from Product where parent_product_id is null");
-			for (Product product : products) {
-				getDao().findComplete(new Integer(product.getId()));
+			for(int i = 0; i<products.size();i++){
+				s.append(getDao().findComplete(new Integer(products.get(i).getId())).toJson());
+				if(i != products.size() -1){
+					s.append(COMMA);
+				}
 			}
-			return products;
+			return Response.status(Status.OK).entity(s.append(CLOSE_BRACKETS).toString()).build();			
 		} catch (Exception e){
 			e.printStackTrace();
-			return null;
+			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();
 		}
     }
 	
