@@ -22,6 +22,7 @@ public class ProductsDAO implements IDatabase<Product>{
 			getEntityManager().persist(p);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
+			EntityManagerUtil.rollback();
 			throw r;
 		}
 	}
@@ -34,6 +35,7 @@ public class ProductsDAO implements IDatabase<Product>{
 			product = getEntityManager().merge(p);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
+			EntityManagerUtil.rollback();
 			throw r;
 		}
 	}
@@ -45,6 +47,7 @@ public class ProductsDAO implements IDatabase<Product>{
 			getEntityManager().remove(p);
 			EntityManagerUtil.commit();
 		} catch (Exception r){
+			EntityManagerUtil.rollback();
 			throw r;
 		}
 	}
@@ -56,16 +59,30 @@ public class ProductsDAO implements IDatabase<Product>{
 
 	@Override
 	public Product find(Integer id) {
-		return (Product) getEntityManager().find(Product.class, id);
+		try{
+			return (Product) getEntityManager().find(Product.class, id);
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
 	public List<Image> getImageByProduct(Product p){
-		return getImageDAO().recoverAllByProduct(p);
+		try{
+			return getImageDAO().recoverAllByProduct(p);
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Product> recoverAllChildProducts(Product p) {
-		return getEntityManager().createQuery("from Product where parent_product_id = :product").setParameter("product",p.getId()).getResultList();
+		try{
+			return getEntityManager().createQuery("from Product where parent_product_id = :product").setParameter("product",p.getId()).getResultList();
+		} catch (Exception e){
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private EntityManager getEntityManager() {
@@ -86,7 +103,6 @@ public class ProductsDAO implements IDatabase<Product>{
 	@Override
 	public Product findComplete(Integer id) {
 		Product p =find(id);
-		getEntityManager().detach(p);
 		p.setChildProducts(recoverAllChildProducts(p));
 		p.setImages(getImageByProduct(p));
 		return p;

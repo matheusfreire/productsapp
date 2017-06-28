@@ -17,6 +17,7 @@ import javax.ws.rs.core.Response.Status;
 import com.msf.rest.dao.ImageDAO;
 import com.msf.rest.models.Image;
 
+@Path("images")
 public class ImagesController {
 
 	private ImageDAO dao;
@@ -47,6 +48,7 @@ public class ImagesController {
 		try {
 			Image i = getDao().find(id);
 			i.setType(type);
+			getDao().update(i, id);
 			return Response.status(Status.OK).entity("Image updated successfully").build();
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();

@@ -32,7 +32,7 @@ public class ProductsTest {
 			Product p = new Product();
 			p.setName("Teste create"+i);
 			p.setDescription("description awesome"+i);
-			p.setProduct(product);
+			p.setParentProduct(product);
 			arrayList.add(p);
 		}
 		product.setChildProducts(arrayList);

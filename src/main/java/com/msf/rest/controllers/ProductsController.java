@@ -74,7 +74,7 @@ public class ProductsController {
 			Product p = new Product();
 			p.setDescription(description);
 			p.setName(name);
-			p.setProduct(getDao().find(id));
+			p.setParentProduct(getDao().find(id));
 			getDao().persist(p);
 			return Response.status(Status.OK).entity("Product created successfully").build();			
 		} catch (Exception e){
@@ -129,7 +129,7 @@ public class ProductsController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response recoverProductComplete(@PathParam("id") int id){
 		try{
-			return Response.status(Status.OK).entity(getDao().findComplete(id)).build();
+			return Response.ok(getDao().findComplete(id)).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();

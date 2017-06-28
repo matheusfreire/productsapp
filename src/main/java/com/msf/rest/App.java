@@ -2,6 +2,9 @@ package com.msf.rest;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
@@ -14,7 +17,7 @@ import com.msf.rest.bd.EntityManagerUtil;
  *
  */
 public class App {
-    public static final String BASE_URI = "http://localhost:8080/";
+    public static final String BASE_URI = "http://localhost:9090/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -32,6 +35,12 @@ public class App {
      */
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
+        Logger l = Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler");
+        l.setLevel(Level.ALL);
+        l.setUseParentHandlers(false);
+        ConsoleHandler ch = new ConsoleHandler();
+        ch.setLevel(Level.ALL);
+        l.addHandler(ch);
         EntityManagerUtil.initiateManager(); 
         System.out.println("Running");
         System.in.read();

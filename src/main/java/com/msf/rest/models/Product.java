@@ -12,16 +12,19 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Table(name="Products")
-@Data
+@XmlRootElement
 public class Product implements Serializable{
 	
 	private static final long serialVersionUID = -4747635346806802214L;
@@ -31,24 +34,31 @@ public class Product implements Serializable{
 	}
 
 	@Id 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+	@Getter @Setter
+	@SequenceGenerator(name = "PROD_ID_GENERATOR", sequenceName = "PROD_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PROD_ID_GENERATOR")
 	private int id;
 	
 	@Column(name="name", nullable= false)
+	@Getter @Setter
 	private String name;
 	
+	@Getter @Setter
 	private String description;
 	
-	@OneToMany(mappedBy="product", targetEntity=Image.class,cascade = CascadeType.REMOVE,orphanRemoval=true)
+	@OneToMany(mappedBy="product", cascade = CascadeType.REMOVE,orphanRemoval=true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Getter @Setter
 	private List<Image> images;
 	
 	@ManyToOne
 	@JoinColumn(name="parent_product_id")
-	private Product product;
+	@Getter @Setter
+	private Product parentProduct;
 	
-	@OneToMany(mappedBy="product",cascade=CascadeType.ALL,orphanRemoval=true)
+	@OneToMany(mappedBy="parentProduct",cascade=CascadeType.ALL,orphanRemoval=true)
 	@OnDelete(action = OnDeleteAction.CASCADE)
+	@Getter @Setter
 	private List<Product> childProducts;
 
 }
