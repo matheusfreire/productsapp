@@ -1,5 +1,7 @@
 package com.msf.rest.models;
 
+import static com.msf.rest.util.TagUtil.*;
+
 import java.io.Serializable;
 
 import javax.persistence.Column;
@@ -40,6 +42,15 @@ public class Image implements Serializable{
 	
 	public Image(){
 		
+	}
+	
+	public String toJson(){
+		StringBuilder s = new StringBuilder();
+		s.append(OPEN_KEYS);
+		s.append(DOUBLE_QUOTE+ "id"+DOUBLE_QUOTE  +":" +this.id + COMMA);
+		s.append(DOUBLE_QUOTE+ "type"+DOUBLE_QUOTE  +":" + DOUBLE_QUOTE +this.type + DOUBLE_QUOTE);
+		s.append(CLOSE_KEYS);
+		return s.toString();
 	}
 
 }

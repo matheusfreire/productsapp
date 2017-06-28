@@ -129,7 +129,7 @@ public class ProductsController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response recoverProductComplete(@PathParam("id") int id){
 		try{
-			return Response.ok(getDao().findComplete(id)).build();
+			return Response.ok(getDao().findComplete(id).toJson()).build();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return Response.status(Status.BAD_REQUEST).entity("Something went wrong").build();

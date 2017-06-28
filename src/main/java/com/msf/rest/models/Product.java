@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import static com.msf.rest.util.TagUtil.*;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -60,5 +62,51 @@ public class Product implements Serializable{
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	@Getter @Setter
 	private List<Product> childProducts;
+	
+	
+	public String toJson(){
+		StringBuilder s = new StringBuilder(OPEN_KEYS);
+		composeJsonInfoBasic(s);
+		s.append(COMMA);
+		composeImageArray(s);
+		s.append(COMMA);
+		composeChildProductsArray(s);
+		return s.append(CLOSE_KEYS).toString();
+	}
+
+
+	private void composeJsonInfoBasic(StringBuilder s) {
+		s.append(DOUBLE_QUOTE+ "id" + DOUBLE_QUOTE  +":" +this.id + COMMA);
+		s.append(DOUBLE_QUOTE+ "name" + DOUBLE_QUOTE  +":" + DOUBLE_QUOTE +this.name + DOUBLE_QUOTE + COMMA);
+		s.append(DOUBLE_QUOTE+ "description"+DOUBLE_QUOTE  +":" + DOUBLE_QUOTE +this.description + DOUBLE_QUOTE);
+	}
+
+
+	private void composeChildProductsArray(StringBuilder s) {
+		s.append(DOUBLE_QUOTE + "products" + DOUBLE_QUOTE + ":");
+		s.append(OPEN_BRACKETS);
+		for (int i = 0; i<childProducts.size();i++) {
+			s.append(OPEN_KEYS);
+			childProducts.get(i).composeJsonInfoBasic(s);
+			s.append(CLOSE_KEYS);
+			if(i != childProducts.size() -1){
+				s.append(COMMA);
+			}
+		}
+		s.append(CLOSE_BRACKETS);
+	}
+
+
+	private void composeImageArray(StringBuilder s) {
+		s.append(DOUBLE_QUOTE + "images" + DOUBLE_QUOTE + ":");
+		s.append(OPEN_BRACKETS);
+		for (int i = 0; i<images.size();i++) {
+			s.append(images.get(i).toJson());
+			if(i != images.size() -1){
+				s.append(COMMA);
+			}
+		}
+		s.append(CLOSE_BRACKETS);
+	}
 
 }
