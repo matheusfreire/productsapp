@@ -113,6 +113,19 @@ public class ProductsController {
 	}
 	
 	@GET
+	@Path("{id}/complete")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Product recoverProductComplete(@PathParam("id") int id){
+		try{
+			return getDao().findComplete(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;	
+		}
+	}
+	
+	
+	@GET
 	@Path("{id}/products")
 	@Produces(MediaType.APPLICATION_JSON)
 	public List<Product> recoverChildrenProducts(@PathParam("id") int id){
