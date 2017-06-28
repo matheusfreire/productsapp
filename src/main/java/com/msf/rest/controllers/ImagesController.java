@@ -3,7 +3,6 @@ package com.msf.rest.controllers;
 import java.util.List;
 
 import javax.ws.rs.DELETE;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -31,7 +30,7 @@ public class ImagesController {
 	@POST
 	@Path("new")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response createNewImage(@FormParam("type") String type) {
+	public Response createNewImage(@QueryParam("type") String type) {
 		try {
 			Image image = new Image();
 			image.setType(type);

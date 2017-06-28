@@ -32,7 +32,7 @@ public class App {
      */
     public static void main(String[] args) throws IOException {
         final HttpServer server = startServer();
-        EntityManagerUtil.initiateManager();
+        EntityManagerUtil.initiateManager(); 
         System.out.println("Running");
         System.in.read();
         server.shutdownNow();;

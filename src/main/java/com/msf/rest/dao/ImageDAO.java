@@ -18,17 +18,18 @@ public class ImageDAO implements IDatabase<Image>{
 			i = EntityManagerUtil.getEntityManager().merge(i);
 			EntityManagerUtil.getEntityManager().persist(i);
 			EntityManagerUtil.commit();
+			
 		} catch (RollbackException r){
 			throw r;
 		}
 	}
 
 	@Override
-	public void update(Image p, Integer id) throws RollbackException{
+	public void update(Image i, Integer id) throws RollbackException{
 		try{
 			Image image = find(id);
 			EntityManagerUtil.beginTransaction();
-			image.setType(p.getType());
+			image = EntityManagerUtil.getEntityManager().merge(i);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
 			throw r;
@@ -38,6 +39,7 @@ public class ImageDAO implements IDatabase<Image>{
 	@Override
 	public void delete(Image i) throws RollbackException{
 		try{
+			EntityManagerUtil.beginTransaction();
 			EntityManagerUtil.getEntityManager().remove(i);
 			EntityManagerUtil.commit();
 		} catch (RollbackException r){
@@ -56,7 +58,7 @@ public class ImageDAO implements IDatabase<Image>{
 	}
 	
 	public List<Image> recoverAllByProduct(Product p){
-		return EntityManagerUtil.getEntityManager().createQuery("from Image where product = :product").setParameter("product",p).getResultList();
+		return EntityManagerUtil.getEntityManager().createQuery("from Image where product_id = :product").setParameter("product",p.getId()).getResultList();
 	}
 
 	@Override
