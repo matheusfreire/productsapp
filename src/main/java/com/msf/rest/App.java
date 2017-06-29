@@ -17,7 +17,8 @@ import com.msf.rest.bd.EntityManagerUtil;
  *
  */
 public class App {
-    public static final String BASE_URI = "http://localhost:9090/";
+	public static final String PORT = "8080";
+    public static final String BASE_URI = "http://localhost:"+PORT+"/";
 
     /**
      * Starts Grizzly HTTP server exposing JAX-RS resources defined in this application.
@@ -42,7 +43,7 @@ public class App {
         ch.setLevel(Level.ALL);
         l.addHandler(ch);
         EntityManagerUtil.initiateManager(); 
-        System.out.println("Running");
+        System.out.println("Running in port: " + PORT);
         System.in.read();
         server.shutdownNow();;
     }
