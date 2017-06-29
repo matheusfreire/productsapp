@@ -9,9 +9,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 To run this app 100%, you need a Java installed in your computer. See below how to install in your pc. 
 
-```
 [Install java - Oracle](https://www.java.com/en/download/help/download_options.xml)
-```
 
 ### Installing
 
@@ -54,8 +52,6 @@ mvn exec:java
 ## Authors
 
 * **Matheus Freire** - *Initial work* - [MATHEUSFREIRE](https://github.com/matheusfreire)
-
-## License
 
 
 ## Acknowledgments
