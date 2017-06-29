@@ -47,6 +47,7 @@ mvn exec:java
 * [Jersey](https://github.com/jersey/jersey) - Java RESTful Web Services Framework and JAX-RS Reference Implementation
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [Grizzly](https://github.com/javaee/grizzly) - Java EE Server Application
+* [SQLite](https://www.sqlite.org) - Database 
 
 ## Endpoints
 
