@@ -133,7 +133,5 @@ curl -X DELETE http://localhost:8080/images/1
 * **Matheus Freire** - *Initial work* - [MATHEUSFREIRE](https://github.com/matheusfreire)
 
 
-## Acknowledgments
 
-* Inspiration: Avenue Code challenge
 
